@@ -1,7 +1,12 @@
 import './App.css';
 
-function Item({ name, isPacked }) {
-  return <li className="item">{isPacked ? name + ' ✔' : name}</li>;
+function Item(props) {
+  let itemContent = props.name;
+  if (props.isPacked) {
+    itemContent = <del>{props.name + ' ✔'}</del>;
+  }
+
+  return <li className="item">{itemContent}</li>;
 }
 
 function App() {
