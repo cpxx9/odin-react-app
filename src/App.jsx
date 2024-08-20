@@ -1,10 +1,7 @@
-import "./App.css";
+import './App.css';
 
 function Item({ name, isPacked }) {
-  if (isPacked) {
-    return <li className="item">{name} ✔</li>;
-  }
-  return <li className="item">{name}</li>;
+  return <li className="item">{isPacked ? name + ' ✔' : name}</li>;
 }
 
 function App() {
