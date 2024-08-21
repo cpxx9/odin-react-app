@@ -1,19 +1,34 @@
 import './App.css';
-import { v4 as uuid } from 'uuid';
-
-const todos = [
-  { task: 'mow the yard', id: uuid() },
-  { task: 'Work on Odin Projects', id: uuid() },
-  { task: 'feed the cat', id: uuid() },
-];
+// import { v4 as uuid } from 'uuid';
+import { sculptureList } from './data';
+import { useState } from 'react';
 
 function App() {
+  const [index, setIndex] = useState(0);
+  const [showMore, setShowMore] = useState(false);
+
+  function handleNextClick() {
+    setIndex(index + 1);
+  }
+
+  function handleMoreClick() {
+    setShowMore(!showMore);
+  }
+
+  let sculpture = sculptureList[index];
   return (
-    <ul>
-      {todos.map((todo) => (
-        <li key={todo.id}>{todo.task}</li>
-      ))}
-    </ul>
+    <>
+      <button onClick={handleNextClick}>Next</button>
+      <h2>
+        <i>{sculpture.name}</i>
+        by {sculpture.artist}
+      </h2>
+      <h3>
+        ({index + 1} of {sculptureList.length})
+      </h3>
+      <img src={sculpture.url} alt={sculpture.alt} />
+      <p>{sculpture.description}</p>
+    </>
   );
 }
 
