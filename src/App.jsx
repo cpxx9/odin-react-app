@@ -6,9 +6,11 @@ const COLORS = ['pink', 'green', 'blue', 'yellow', 'purple'];
 
 function App() {
   const [backgroundColor, setBackgroundColor] = useState(COLORS[0]);
+  const [timesChanged, setTimesChanged] = useState(0);
 
   const onButtonClick = (color) => () => {
     setBackgroundColor(color);
+    setTimesChanged(timesChanged + 1);
   };
 
   return (
@@ -18,6 +20,7 @@ function App() {
         backgroundColor,
       }}
     >
+      <h2>Times Changed: {timesChanged}</h2>
       {COLORS.map((color) => (
         <button
           type="button"
