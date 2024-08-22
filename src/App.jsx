@@ -3,15 +3,23 @@ import './App.css';
 import { useState } from 'react';
 import { initialTravelPlan } from './data';
 
-function PlaceTree({ place }) {
-  const childPlaces = place.childPlaces;
+function PlaceTree({ id, parentId, placesById, onComplete }) {
+  const place = placesById[id];
+  const childIds = place.childIds;
   return (
     <li>
       {place.title}
-      {childPlaces.length > 0 && (
+      <button onClick={() => onComplete(parentId, id)}>Complete</button>
+      {childIds.length > 0 && (
         <ol>
-          {childPlaces.map((place) => (
-            <PlaceTree key={place.id} place={place} />
+          {childIds.map((childId) => (
+            <PlaceTree
+              key={childId}
+              id={childId}
+              parentId={id}
+              placesById={placesById}
+              onComplete={onComplete}
+            />
           ))}
         </ol>
       )}
@@ -21,14 +29,34 @@ function PlaceTree({ place }) {
 
 function App() {
   const [plan, setPlan] = useState(initialTravelPlan);
-  const planets = plan.childPlaces;
+
+  function handleComplete(parentId, childId) {
+    const parent = plan[parentId];
+    const nextParent = {
+      ...parent,
+      childIds: parent.childIds.filter((id) => id !== childId),
+    };
+    setPlan({
+      ...plan,
+      [parentId]: nextParent,
+    });
+  }
+
+  const root = plan[0];
+  const planetIds = root.childIds;
 
   return (
     <>
       <h2>Places to visit</h2>
       <ol>
-        {planets.map((place) => (
-          <PlaceTree key={place.id} place={place} />
+        {planetIds.map((id) => (
+          <PlaceTree
+            key={id}
+            id={id}
+            parentId={0}
+            placesById={plan}
+            onComplete={handleComplete}
+          />
         ))}
       </ol>
     </>
