@@ -1,51 +1,36 @@
 import './App.css';
 // import { v4 as uuid } from 'uuid';
 import { useState } from 'react';
+import { initialTravelPlan } from './data';
 
-const initialItems = [
-  { title: 'pretzels', id: 0 },
-  { title: 'crispy seaweed', id: 1 },
-  { title: 'granola bar', id: 2 },
-];
+function PlaceTree({ place }) {
+  const childPlaces = place.childPlaces;
+  return (
+    <li>
+      {place.title}
+      {childPlaces.length > 0 && (
+        <ol>
+          {childPlaces.map((place) => (
+            <PlaceTree key={place.id} place={place} />
+          ))}
+        </ol>
+      )}
+    </li>
+  );
+}
 
 function App() {
-  const [items, setItems] = useState(initialItems);
-  const [selectedItems, setSelectedItems] = useState(items[0]);
-
-  function handleItemChange(id, e) {
-    setItems(
-      items.map((item) => {
-        if (item.id === id) {
-          return { ...item, title: e.target.value };
-        }
-        return item;
-      }),
-    );
-  }
+  const [plan, setPlan] = useState(initialTravelPlan);
+  const planets = plan.childPlaces;
 
   return (
     <>
-      <h2>What&apos;s your travel snack?</h2>
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            <input
-              value={item.title}
-              onChange={(e) => {
-                handleItemChange(item.id, e);
-              }}
-            />{' '}
-            <button
-              onClick={() => {
-                setSelectedItems(item);
-              }}
-            >
-              Choose
-            </button>
-          </li>
+      <h2>Places to visit</h2>
+      <ol>
+        {planets.map((place) => (
+          <PlaceTree key={place.id} place={place} />
         ))}
-      </ul>
-      <p>You picked {selectedItems.title}.</p>
+      </ol>
     </>
   );
 }

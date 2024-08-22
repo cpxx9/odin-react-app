@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+ol {
+  margin: 0 15px 0 15px;
+  padding: 0 15px 0 15px;
+}
+
 .App {
   display: flex;
   justify-content: space-around;
