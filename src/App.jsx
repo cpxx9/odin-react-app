@@ -2,35 +2,50 @@ import './App.css';
 // import { v4 as uuid } from 'uuid';
 import { useState } from 'react';
 
+const initialItems = [
+  { title: 'pretzels', id: 0 },
+  { title: 'crispy seaweed', id: 1 },
+  { title: 'granola bar', id: 2 },
+];
+
 function App() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [items, setItems] = useState(initialItems);
+  const [selectedItems, setSelectedItems] = useState(items[0]);
 
-  function handleFirstNameChange(e) {
-    setFirstName(e.target.value);
-    setFullName(e.target.value + ' ' + lastName);
-  }
-
-  function handleLastNameChange(e) {
-    setLastName(e.target.value);
-    setFullName(firstName + ' ' + e.target.value);
+  function handleItemChange(id, e) {
+    setItems(
+      items.map((item) => {
+        if (item.id === id) {
+          return { ...item, title: e.target.value };
+        }
+        return item;
+      }),
+    );
   }
 
   return (
     <>
-      <h2>Let&apos;s check you in</h2>
-      <label>
-        First Name:
-        <input value={firstName} onChange={handleFirstNameChange} />
-      </label>
-      <label>
-        Last Name:
-        <input value={lastName} onChange={handleLastNameChange} />
-      </label>
-      <p>
-        Your ticket will be issues to: <b>{fullName}</b>
-      </p>
+      <h2>What&apos;s your travel snack?</h2>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>
+            <input
+              value={item.title}
+              onChange={(e) => {
+                handleItemChange(item.id, e);
+              }}
+            />{' '}
+            <button
+              onClick={() => {
+                setSelectedItems(item);
+              }}
+            >
+              Choose
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p>You picked {selectedItems.title}.</p>
     </>
   );
 }
